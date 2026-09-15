@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Interview Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F7F4;
+    --surface: #FFFFFF;
+    --ink: #1F2421;
+    --ink-secondary: #5B645C;
+    --ink-muted: #8B948A;
+    --accent: #2B6E63;
+    --accent-weak: #EDF3F1;
+    --rule: #D9DED6;
+    --danger: #A34A3D;
+    --danger-weak: #F6ECEA;
+    --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 28px 0 20px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 28px;
+  }
+
+  .topbar .name {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .topbar .qid {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+
+  section { margin-bottom: 32px; }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-secondary);
+    margin: 0 0 10px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--accent-weak);
+    padding: 3px 9px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+  }
+
+  .question-text {
+    font-size: 19px;
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 14px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    resize: vertical;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .error-text {
+    font-size: 13px;
+    color: var(--danger);
+    margin: 8px 0 0;
+    display: none;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+
+  button {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--surface);
+    background: var(--ink);
+    border: none;
+    border-radius: 4px;
+    padding: 11px 20px;
+    cursor: pointer;
+  }
+  button:hover { background: var(--accent); }
+  button:disabled { background: var(--ink-muted); cursor: default; }
+
+  button.secondary {
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--rule);
+  }
+  button.secondary:hover { border-color: var(--accent); background: transparent; color: var(--accent); }
+
+  .score-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .score-num {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 500;
+  }
+  .score-max {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+
+  .gauge {
+    height: 4px;
+    background: var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .gauge-fill {
+    height: 100%;
+    background: var(--accent);
+  }
+
+  .feedback-text {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-secondary);
+    max-width: 60ch;
+  }
+
+  .weak-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--danger);
+    background: var(--danger-weak);
+    padding: 3px 9px;
+    border-radius: 3px;
+    margin-top: 14px;
+  }
+
+  .weak-list { border-top: 1px solid var(--rule); }
+  .weak-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+  }
+  .weak-row .num {
+    font-family: var(--font-mono);
+    color: var(--ink-secondary);
+  }
+
+  .empty-state {
+    padding: 40px 0;
+    text-align: center;
+    color: var(--ink-secondary);
+  }
+  .empty-state p { max-width: 40ch; margin: 8px auto 0; font-size: 14px; }
+
+  .hidden { display: none; }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #16181A;
+      --surface: #1E2123;
+      --ink: #E8EAE6;
+      --ink-secondary: #A3ABA0;
+      --ink-muted: #6B746A;
+      --accent: #6FBFAE;
+      --accent-weak: #1E2E2A;
+      --rule: #2C302D;
+      --danger: #D68276;
+      --danger-weak: #2E211F;
+    }
+    button { color: var(--paper); }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="topbar">
+    <span class="name">Interview Prep</span>
+    <span class="qid" id="qid">—</span>
+  </div>
+
+  <div id="app">
+    <div class="empty-state" id="loading">
+      <p>Loading…</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_BASE = ''; // same-origin — served from this Express app
+
+  const app = document.getElementById('app');
+  const qidLabel = document.getElementById('qid');
+
+  let currentQuestion = null;
+
+  async function api(path, options = {}) {
+    const res = await fetch(API_BASE + path, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options,
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const err = new Error(body.error || `Request failed (${res.status})`);
+      err.status = res.status;
+      throw err;
+    }
+    return body;
+  }
+
+  function renderEmpty(message) {
+    qidLabel.textContent = '—';
+    app.innerHTML = `
+      <div class="empty-state">
+        <p>${escapeHtml(message)}</p>
+      </div>
+    `;
+  }
+
+  function renderQuestion(question) {
+    currentQuestion = question;
+    qidLabel.textContent = 'Q-' + String(question.id).padStart(3, '0');
+
+    app.innerHTML = `
+      <section>
+        <span class="tag">${escapeHtml(question.category)}</span>
+        <p class="question-text">${escapeHtml(question.question)}</p>
+      </section>
+
+      <section>
+        <p class="label">your answer</p>
+        <textarea id="answer" placeholder="Type your answer…"></textarea>
+        <p class="error-text" id="answer-error">Enter an answer first.</p>
+        <div class="actions">
+          <button id="submit-btn">Submit answer</button>
+        </div>
+      </section>
+
+      <section id="weak-areas-section"></section>
+    `;
+
+    document.getElementById('submit-btn').addEventListener('click', handleSubmit);
+    loadWeakAreas();
+  }
+
+  function renderFeedback(question, result) {
+    qidLabel.textContent = 'Q-' + String(question.id).padStart(3, '0');
+    const score = Math.max(0, Math.min(100, Math.round(result.score)));
+
+    app.innerHTML = `
+      <section>
+        <span class="tag">${escapeHtml(question.category)}</span>
+        <p class="question-text">${escapeHtml(question.question)}</p>
+      </section>
+
+      <section>
+        <p class="label">grade</p>
+        <div class="score-row">
+          <span class="score-num">${score}</span>
+          <span class="score-max">/ 100</span>
+        </div>
+        <div class="gauge"><div class="gauge-fill" style="width:${score}%"></div></div>
+        <p class="feedback-text">${escapeHtml(result.feedback || '')}</p>
+        ${result.weakArea ? `<span class="weak-tag">${escapeHtml(result.weakArea)}</span>` : ''}
+      </section>
+
+      <section>
+        <div class="actions">
+          <button id="next-btn">Next question</button>
+        </div>
+      </section>
+
+      <section id="weak-areas-section"></section>
+    `;
+
+    document.getElementById('next-btn').addEventListener('click', loadQuestion);
+    loadWeakAreas();
+  }
+
+  async function loadQuestion() {
+    qidLabel.textContent = '—';
+    app.innerHTML = `<div class="empty-state"><p>Loading…</p></div>`;
+    try {
+      const data = await api('/session/next');
+      renderQuestion(data.question);
+    } catch (err) {
+      if (err.status === 404) {
+        renderEmpty('No questions in the bank yet. Run the seed script on the server first.');
+      } else if (err.status === 429) {
+        renderEmpty(err.message);
+      } else {
+        renderEmpty('Could not reach the prep agent. ' + err.message);
+      }
+    }
+  }
+
+  async function handleSubmit() {
+    const textarea = document.getElementById('answer');
+    const errorEl = document.getElementById('answer-error');
+    const btn = document.getElementById('submit-btn');
+    const answer = textarea.value.trim();
+
+    if (!answer) {
+      errorEl.style.display = 'block';
+      return;
+    }
+    errorEl.style.display = 'none';
+
+    btn.disabled = true;
+    btn.textContent = 'Grading…';
+
+    try {
+      const data = await api('/session/answer', {
+        method: 'POST',
+        body: JSON.stringify({ questionId: currentQuestion.id, answer }),
+      });
+      renderFeedback(currentQuestion, data.result);
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Submit answer';
+      errorEl.textContent = err.message;
+      errorEl.style.display = 'block';
+    }
+  }
+
+  async function loadWeakAreas() {
+    const section = document.getElementById('weak-areas-section');
+    if (!section) return;
+    try {
+      const data = await api('/session/history');
+      const weak = (data.weakCategories || []).filter((c) => c.category);
+      if (weak.length === 0) {
+        section.innerHTML = '';
+        return;
+      }
+      section.innerHTML = `
+        <p class="label">weak areas</p>
+        <div class="weak-list">
+          ${weak.map((c) => `
+            <div class="weak-row">
+              <span>${escapeHtml(c.category)}</span>
+              <span class="num">${Math.round(c.avgScore)} avg</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } catch (err) {
+      // weak-areas panel is supplementary — fail silently rather than blocking the main flow
+      section.innerHTML = '';
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  loadQuestion();
+</script>
+</body>
+</html>

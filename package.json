@@ -1,0 +1,30 @@
+{
+  "name": "interview-prep-agent",
+  "version": "0.1.0",
+  "description": "RAG-based interview prep agent. Generates a question bank (general + JD-targeted), quizzes you in text, grades answers against retrieved reference material, and grows the bank from every session.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "seed": "node src/cli/seed.js",
+    "ingest-jd": "node src/cli/ingestJd.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0",
+    "@langchain/anthropic": "^1.5.10",
+    "@langchain/core": "^1.2.11",
+    "@langchain/textsplitters": "^1.0.1",
+    "better-sqlite3": "^11.3.0",
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "pdf-parse": "^1.1.1",
+    "zod": "^3.24.1"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
