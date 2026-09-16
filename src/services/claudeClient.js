@@ -44,6 +44,8 @@ You are grading a candidate's answer to a Magento/Adobe Commerce Architect
 interview question. Be fair but rigorous — this is practice, so clear,
 actionable feedback matters more than encouragement. Ground your grading in
 the provided model answer and reference context, not just general knowledge.
+For weakArea, name the specific concept the candidate should review, or
+return an empty string if the answer was strong.
 `.trim();
 
   const user = `
@@ -61,6 +63,6 @@ ${userAnswer}
     return await invokeGrading({ system, user });
   } catch (err) {
     console.error('Grading failed:', err.message);
-    return { score: 0, feedback: 'Grading failed.', weakArea: null };
+    return { score: 0, feedback: 'Grading failed.', weakArea: '' };
   }
 }

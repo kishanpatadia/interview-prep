@@ -26,5 +26,5 @@ export const QuestionsResponseSchema = z.object({
 export const GradeSchema = z.object({
   score: z.number().min(0).max(100),
   feedback: z.string(),
-  weakArea: z.string().nullable(),
+  weakArea: z.string(),
 });

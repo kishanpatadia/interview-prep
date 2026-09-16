@@ -5,6 +5,10 @@ export const config = {
     apiKey: process.env.ANTHROPIC_API_KEY,
     model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
   },
+  gemini: {
+    apiKey: process.env.GOOGLE_API_KEY,
+    model: process.env.GEMINI_MODEL || 'gemini-3.6-flash',
+  },
   voyage: {
     apiKey: process.env.VOYAGE_API_KEY,
     model: process.env.VOYAGE_MODEL || 'voyage-3-lite',
