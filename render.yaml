@@ -10,5 +10,20 @@ services:
       - key: ANTHROPIC_API_KEY
         sync: false          # set manually in Render dashboard — never commit real keys
       - key: CLAUDE_MODEL
-        value: claude-sonnet
-
+        value: claude-sonnet-4-6
+      - key: VOYAGE_API_KEY
+        sync: false          # set manually in Render dashboard
+      - key: VOYAGE_MODEL
+        value: voyage-3-lite
+      - key: PORT
+        value: 3000
+      - key: DB_PATH
+        value: ./data/prep.db
+      - key: SEED_TOPIC
+        value: "Adobe Commerce (Magento) Architect-level interview prep"
+      - key: SEED_COUNT
+        value: 70
+      - key: DAILY_CLAUDE_CALL_LIMIT
+        value: 50
+      - key: RATE_LIMIT_PER_IP_PER_HOUR
+        value: 15
