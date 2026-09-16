@@ -25,4 +25,7 @@ export const config = {
     dailyClaudeCallLimit: Number(process.env.DAILY_CLAUDE_CALL_LIMIT || 50),
     rateLimitPerIpPerHour: Number(process.env.RATE_LIMIT_PER_IP_PER_HOUR || 15),
   },
+  admin: {
+    seedSecret: process.env.ADMIN_SEED_SECRET,
+  },
 };

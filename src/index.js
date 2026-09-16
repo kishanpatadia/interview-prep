@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config } from './config.js';
 import { sessionRouter } from './routes/session.js';
+import { adminRouter } from './routes/admin.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,6 +23,7 @@ const demoLimiter = rateLimit({
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 app.use('/session', demoLimiter, sessionRouter);
+app.use('/admin', adminRouter);
 
 app.listen(config.app.port, () => {
   console.log(`Interview Prep Agent listening on port ${config.app.port}`);
