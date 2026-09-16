@@ -24,7 +24,7 @@
     "zod": "^3.24.1"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18 <23"
   },
   "license": "MIT"
 }
